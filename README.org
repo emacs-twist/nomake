@@ -91,6 +91,12 @@ In the =outputs= section of flake.nix, set =localPackages= to a list of packages
 #+end_src
 *** Development workflow
 This subsection describes how to use nomake locally during development.
+
+First generate lock files for your package dependencies:
+
+#+begin_src sh
+  nix run .#lock
+#+end_src
 **** Linting and byte-compiling the package
 For byte-compiling, a snapshot version of [[https://github.com/purcell/nix-emacs-ci][nix-emacs-ci]] is used.
 
