@@ -14,9 +14,14 @@ It is meant for use in emacs-twist and my other Emacs Lisp packages.
 
 NoMake heavily depends on [[https://nixos.wiki/wiki/Flakes][Nix flakes]], and you will need an understanding of flakes to use it.
 :CONTENTS:
-- [[#when-to-and-when-not-to-use-elinter][When to and when not to use elinter]]
-- [[#guide-how-to-configure-your-emacs-lisp-project][Guide: How to configure your Emacs Lisp project]]
-- [[#design-goal][Design goal]]
+- [[#features][Features]]
+  - [[#supported-checks][Supported checks]]
+- [[#installation][Installation]]
+- [[#usage][Usage]]
+  - [[#initial-configuration][Initial configuration]]
+  - [[#development-workflow][Development workflow]]
+  - [[#continuous-integration][Continuous integration]]
+- [[#alternatives][Alternatives]]
 :END:
 ** Features
 *** Supported checks
