@@ -1,5 +1,5 @@
 {
-  description = "Your greatest Emacs Lisp package ever";
+  description = "FIXME: Your package description";
 
   inputs = {
     gnu-elpa = {
@@ -7,16 +7,15 @@
       flake = false;
     };
     melpa = {
-      # FIXME: Fork MELPA, create a new branch for your package, add a recipe,
-      # and push it to GitHub
-      url = "github:OWNER/melpa/BRANCH";
-      # TODO: After your package is on MELPA, switch to master.
-      # url = "github:melpa/melpa";
+      # If your package is not on MELPA, fork github:melpa/melpa, create a new
+      # branch for your package, add a recipe, and push it to GitHub.
+      url = "github:melpa/melpa";
+      # url = "github:OWNER/melpa/BRANCH";
       flake = false;
     };
 
-    elinter = {
-      url = "github:akirak/elinter/v5";
+    nomake = {
+      url = "github:emacs-twist/nomake";
       inputs.gnu-elpa.follows = "gnu-elpa";
       inputs.melpa.follows = "melpa";
     };
@@ -24,12 +23,11 @@
 
   outputs =
     { self
-    , elinter
+    , nomake
     , ...
     } @ inputs:
-    elinter.lib.mkFlake {
+    nomake.lib.mkFlake {
       src = ./.;
-      lockDirName = "lock";
       localPackages = [
         (builtins.throw "FIXME: Put your package name here.")
       ];
