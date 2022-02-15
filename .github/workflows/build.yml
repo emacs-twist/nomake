@@ -15,7 +15,7 @@ jobs:
         extra_nix_config: |
           substituters = https://cache.nixos.org https://emacs-ci.cachix.org
           trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= emacs-ci.cachix.org-1:B5FVOrxhXXrOL0S+tQ7USrhjMT5iOPH+QN9q0NItom4=
-    - uses: actions/checkout@v2.3.4
+    - uses: actions/checkout@v2.4.0
 
     - run: nix build .#elinter
     - run: nix run .#elinter -- --help
