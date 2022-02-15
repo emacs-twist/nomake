@@ -7,10 +7,10 @@
 #+END_HTML
 
 NoMake is a framework that runs various checks against Emacs Lisp packages.
-It is an alternative to [[https://github.com/cask/cask][Cask]], [[https://github.com/alphapapa/makem.sh][makem.sh]], [[https://github.com/riscy/melpazoid/][melpazoid]], [[https://github.com/vermiculus/emake.el][emake]], [[https://gitea.petton.fr/DamienCassou/makel/][makel]], etc., but based on [[https://github.com/emacs-twist/twist.nix][twist]] and Nix-oriented.
+It is an alternative to [[https://github.com/cask/cask][Cask]], [[https://github.com/alphapapa/makem.sh][makem.sh]], [[https://github.com/riscy/melpazoid/][melpazoid]], [[https://github.com/vermiculus/emake.el][emake]], [[https://gitea.petton.fr/DamienCassou/makel/][makel]], etc., but Nix-oriented and based on [[https://github.com/emacs-twist/twist.nix][twist]].
 It is yet a new iteration of [[https://github.com/akirak/elinter/][elinter]] (a.k.a. emacs-package-checker, melpa-check, etc.).
 
-It is meant for use in emacs-twist and my other Emacs Lisp packages.
+It is meant for use in [[https://github.com/orgs/emacs-twist/][emacs-twist]] org and my other Emacs Lisp packages.
 
 NoMake heavily depends on [[https://nixos.wiki/wiki/Flakes][Nix flakes]], and you will need an understanding of flakes to use it.
 :CONTENTS:
@@ -55,14 +55,13 @@ To add nomake to an existing Emacs Lisp project, you can use =nix flake init= co
   nix flake init -t github:emacs-twist/nomake
 #+end_src
 **** Create a new branch for your MELPA recipe
-If your package is already on MELPA, you can skip this section.
+If your package is already on MELPA, you can skip this subsubsection.
 
-Whether you release your package to [[https://melpa.org/#/][MELPA]] or not, 
-You need a recipe for your package
+Whether you release your package to [[https://melpa.org/#/][MELPA]] or not, you need to put the recipe for your package in a branch.
 
-Fork [[https://github.com/melpa/melpa/][the repository]] of MELPA, create a new branch from master, add a recipe (see [[https://github.com/melpa/melpa/#recipe-format][the format]]), and push it to GitHub or any code hosting service.
+Fork [[https://github.com/melpa/melpa/][the repository]] of MELPA, create a new branch from master, add a recipe (see [[https://github.com/melpa/melpa/#recipe-format][the format]]), and push it to GitHub (or any code hosting service).
 
-Edit flake.nix to point the =melpa= input to your branch:
+Edit flake.nix to point the =melpa= to your branch:
 
 #+begin_src nix
   {
@@ -96,8 +95,12 @@ First generate lock files for your package dependencies:
 #+begin_src sh
   nix run .#lock
 #+end_src
+
+The dependencies are inspected from the library header of your package.
+You should run this command every time you add a new dependency.
 **** Linting and byte-compiling the package
 For byte-compiling, a snapshot version of [[https://github.com/purcell/nix-emacs-ci][nix-emacs-ci]] is used.
+The following command runs all checks (currently package-lint and byte-compiling):
 
 #+begin_src sh
   nix run .#nomake -- PACKAGE
@@ -105,9 +108,10 @@ For byte-compiling, a snapshot version of [[https://github.com/purcell/nix-emacs
 
 =PACKAGE= should be the name of the package.
 **** Scripts
-To run a test in an isolated Emacs session, you can define a script.
-Scripts are a convenient feature that lets you run a shell script with Emacs in your PATH.
-Your package is available in the session, and you can also add extra packages for your testing.
+To run tests, you have to define a script.
+Scripts are a feature that lets you run a shell script in a development environment.
+In scripts, you can run Emacs with package(s) under test.
+It is also possible to add extra packages for testing.
 
 To define a script, edit flake.nix and add =scripts= attribute:
 
@@ -132,11 +136,11 @@ To define a script, edit flake.nix and add =scripts= attribute:
   };
 #+end_src
 
-The example shown above adds [[https://github.com/jorgenschaefer/emacs-buttercup][buttercup]] to the script environment and defines =test= script that runs tests.
-=compile = true;= means the user package is byte-compiled when the script is run.
+In the example shown above, =test= script is defined, and [[https://github.com/jorgenschaefer/emacs-buttercup][buttercup]] is added for running the tests.
+=compile = true;= means that the user package is byte-compiled when the script is run.
 Tests are discovered from the working directory.
 
-To run the script, use =nix run=:
+To run the script, you can use =nix run=:
 
 #+begin_src sh
   nix run .#test
@@ -145,8 +149,8 @@ To run the script, use =nix run=:
 The application name (=test= in this case) is the same as the name of the script defined in the flake.
 ***** Run a script with a different Emacs version
 It is possible to run a script with different versions of Emacs.
-You can pick a version available from nix-emacs-ci, and the minimum Emacs version is inferred from the library header.
-Only required executables are downloaded from the binary cache.
+You can pick a version available from nix-emacs-ci, but only required executables are downloaded from the binary cache.
+The minimum Emacs version is determined from the library header of your local package.
 
 To check a list of Emacs versions for your package, run the following command (=test= should be the name of your script):
 
@@ -154,7 +158,7 @@ To check a list of Emacs versions for your package, run the following command (=
   nix eval .#packages.x86_64-linux.test.matrix --apply builtins.attrNames
 #+end_src
 
-To run the test with Emacs 26.2, run the following command:
+To run the tests with Emacs 26.2, run the following command:
 
 #+begin_src sh
   nix run .#test.matrix.emacs-26-2
@@ -164,16 +168,16 @@ This subsection provides an instruction for setting up CI for Emacs Lisp project
 At present, only GitHub Actions is supported.
 **** GitHub Actions
 ***** Generate workflows
-While it is possible to run Nix for linting your package with nomake, it is slow if binary cache is unavailable.
+While it is possible to run Nix for linting your package on CI, it is slow when binary cache is unavailable.
 Instead, you can use an experimental feature of nomake to generate GitHub workflows.
 The generated workflows uses [[https://github.com/purcell/setup-emacs/][setup-emacs]] and installs latest packages using =package.el=.
-It is a fairly standard setup in the Emacs community.
+This is a fairly standard setup in the Emacs community.
 It does not always produce the same result as Nix, and it also does not support multi-package repositories well, but it is even better for submission to MELPA.
 
 To generate workflows, run the following command:
 
 #+begin_src sh
-  nix run .#github-workflows
+  nix build .#github-workflows
 #+end_src
 
 The workflow files are available in =result= directory.
@@ -184,3 +188,7 @@ To copy the files to the designated directory, you can use the following command
 #+end_src
 ** Alternatives
 See [[https://github.com/alphapapa/makem.sh#comparisons][comparisons]] by the author of makem.
+
+At present, nomake doesn't have as many features as makem, nor is it mature.
+The focus of this project is about consistent quality control across multiple projects (primarily for emacs-twist) and trying to shift more tasks to Nix.
+It avoids impure Nix code, unlike the former version.
