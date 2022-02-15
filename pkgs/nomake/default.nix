@@ -8,7 +8,7 @@
 }:
 with builtins;
 writeShellApplication {
-  name = "elinter";
+  name = "nomake";
 
   runtimeInputs = [
     jq

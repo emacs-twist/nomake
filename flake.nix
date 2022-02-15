@@ -68,11 +68,11 @@
         ];
       };
 
-      admin = pkgs.elinter.emacsConfigForLint.admin "./pkgs/emacs-config/lock";
+      admin = pkgs.nomake.emacsConfigForLint.admin "./pkgs/emacs-config/lock";
     in
     {
       packages = flake-utils.lib.flattenTree {
-        inherit (pkgs.elinter) elinter elsa;
+        inherit (pkgs.nomake) nomake elsa;
       };
 
       apps.lock = mkApp {

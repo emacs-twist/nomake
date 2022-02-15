@@ -9,7 +9,7 @@ let
     inputs.twist.overlay
   ] final prev;
 in {
-  elinter = lib.makeScope prev.newScope (self: {
+  nomake = lib.makeScope prev.newScope (self: {
     emacs = pkgs.emacs-snapshot;
 
     emacsCIVersions = lib.getAttrs pkgs.emacs-ci-versions pkgs;
@@ -38,7 +38,7 @@ in {
       emacsWithElsa = self.emacsConfigForLint;
     };
 
-    elinter = lib.makeOverridable (self.callPackage ./elinter { }) {
+    nomake = lib.makeOverridable (self.callPackage ./nomake { }) {
       # TODO: Use a proper module API
       plugins = {
         package-lint = self.callPackage ./plugins/package-lint {

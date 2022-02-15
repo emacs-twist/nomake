@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 usage() {
-    echo "Usage: elinter PACKAGE [COMMAND] [ARGS]..."
+    echo "Usage: nomake PACKAGE [COMMAND] [ARGS]..."
 }
 
 flake=$(pwd)

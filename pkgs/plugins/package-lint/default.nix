@@ -21,7 +21,7 @@ writers.writeBashBin "package-lint" ''
     files+=("$f")
   done
 
-  emacs_dir="''${XDG_DATA_HOME:-$HOME/.local/share}/elinter"
+  emacs_dir="''${XDG_DATA_HOME:-$HOME/.local/share}/nomake"
   mkdir -p "''${emacs_dir}"
 
   echo "Checking the package with package-lint..."

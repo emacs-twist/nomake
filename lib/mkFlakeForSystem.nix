@@ -20,9 +20,9 @@ let
     ];
   };
 
-  inherit (pkgs.elinter) emacsCIVersions;
+  inherit (pkgs.nomake) emacsCIVersions;
 
-  emacsConfig = lib.makeOverridable pkgs.elinter.mkEmacsConfigForDevelopment {
+  emacsConfig = lib.makeOverridable pkgs.nomake.mkEmacsConfigForDevelopment {
     inherit src lockDirName localPackages extraPackages;
   };
 
@@ -41,13 +41,13 @@ let
   update = pkgs.writeShellScriptBin "update" ''
     set -euo pipefail
 
-    nix flake lock --update-input elinter
+    nix flake lock --update-input nomake
     ${admin.update}/bin/lock
     cd ${lockDirName}
     nix flake update
   '';
 
-  scriptPackages = lib.mapAttrs (pkgs.elinter.makeScriptPackage {
+  scriptPackages = lib.mapAttrs (pkgs.nomake.makeScriptPackage {
     inherit minimumEmacsVersion emacsConfig;
   })
     scripts;
@@ -64,7 +64,7 @@ let
 
   mainFile = emacsConfig.packageInputs.${head localPackages}.mainFile;
 
-  scriptWorkflows = pkgs.elinter.makeGitHubWorkflows {
+  scriptWorkflows = pkgs.nomake.makeGitHubWorkflows {
     inherit minimumEmacsVersion lockDirName localPackages lispFiles lispDirs;
   } ({
     lint = {
@@ -86,7 +86,7 @@ in
     emacs = emacsConfig;
     inherit (admin) lock;
     inherit update;
-    inherit (pkgs.elinter) elinter;
+    inherit (pkgs.nomake) nomake;
     github-workflows = scriptWorkflows;
   } // scriptPackages;
 
