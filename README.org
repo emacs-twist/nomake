@@ -93,6 +93,12 @@ In the =outputs= section of flake.nix, set =localPackages= to a list of packages
 This subsection describes how to use nomake locally during development.
 **** Linting and byte-compiling the package
 For byte-compiling, a snapshot version of [[https://github.com/purcell/nix-emacs-ci][nix-emacs-ci]] is used.
+
+#+begin_src sh
+  nix run .#nomake -- PACKAGE
+#+end_src
+
+=PACKAGE= should be the name of the package.
 **** Scripts
 To run a test in an isolated Emacs session, you can define a script.
 Scripts are a convenient feature that lets you run a shell script with Emacs in your PATH.
