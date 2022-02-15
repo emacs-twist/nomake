@@ -4,7 +4,7 @@
 { system
   # Package configuration
 , src
-, lockDirName ? "lock"
+, lockDirName ? ".nomake"
 , localPackages
 , extraPackages ? [ ]
 , scripts ? { }
