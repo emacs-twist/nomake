@@ -54,10 +54,6 @@
           path = ./templates/simple;
           description = "A boilerplate for an Emacs Lisp-only project";
         };
-        action = {
-          path = ./templates/action;
-          description = "A GitHub Actions workflow for linting your package";
-        };
       };
       defaultTemplate = self.templates.simple;
     } //
