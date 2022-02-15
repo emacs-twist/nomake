@@ -57,7 +57,7 @@ To add nomake to an existing Emacs Lisp project, you can use =nix flake init= co
 **** Create a new branch for your MELPA recipe
 If your package is already on MELPA, you can skip this subsubsection.
 
-Whether you release your package to [[https://melpa.org/#/][MELPA]] or not, you need to put the recipe for your package in a branch.
+Whether you plan on releasing your package to [[https://melpa.org/#/][MELPA]] or not, you will need to put the recipe for your package in a branch.
 
 Fork [[https://github.com/melpa/melpa/][the repository]] of MELPA, create a new branch from master, add a recipe (see [[https://github.com/melpa/melpa/#recipe-format][the format]]), and push it to GitHub (or any code hosting service).
 
