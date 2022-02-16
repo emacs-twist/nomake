@@ -93,7 +93,7 @@ This subsection describes how to use nomake locally during development.
 First generate lock files for your package dependencies:
 
 #+begin_src sh
-  nix run .#lock
+  nix run .#lock --impure
 #+end_src
 
 The dependencies are inspected from the library header of your package.
