@@ -27,8 +27,11 @@ let
 
   trim = text: trimRight (trimLeft text);
 
-  emacsArgs =
-    "-l package --eval \"(package-initialize)\" ${lib.concatMapStringsSep " " (s: "-L " + s) lispDirs}";
+  emacsArgs = concatStringsSep " " ([
+    "-l package"
+    "--eval \"(push '(\\\"melpa\\\" . \\\"https://melpa.org/packages/\\\") package-archives)\""
+    "--eval \"(package-initialize)\""
+  ] ++ map (s: "-L " + s) lispDirs);
 
   # HACK
   prependEmacsArgs = cmdline:
