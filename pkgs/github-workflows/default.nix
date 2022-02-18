@@ -38,105 +38,100 @@ let
     inherit json2yaml runCommandLocal;
   };
 
-  makeWorkflow = name:
-    { text
-    , compile ? false
-    , github ? { }
-    , matrix ? true
-    , description ? null
-    , extraPackages ? [ ]
-    , ...
-    }: {
-      name = github.name or name;
-      on = github.on or {
-        push = {
-          paths = [ "**.el" ];
+  makeJob = { compile, matrix, extraPackages ? [ ], steps }:
+    {
+      runs-on = "ubuntu-latest";
+      strategy = {
+        matrix = {
+          emacs_version = if matrix then emacsVersions else [ "snapshot" ];
         };
       };
-      jobs = {
-        ${name} = {
-          runs-on = "ubuntu-latest";
-          strategy = {
-            matrix = {
-              emacs_version = if matrix then emacsVersions else [ "snapshot" ];
-            };
-          };
-          steps = [
-            {
-              uses = "purcell/setup-emacs@master";
-              "with" = { version = "\${{ matrix.emacs_version }}"; };
-            }
-            {
-              uses = "actions/checkout@v2";
-            }
-            {
-              run = "echo LOCAL_PACKAGES=\"${concatStringsSep " " localPackages}\" >> $GITHUB_ENV";
-            }
-            {
-              name = "Set the arguments";
-              run = ''
-                tmp=$(mktemp)
-                cat > $tmp <<LISP
-                (progn
-                  (require 'package)
-                  (push '("melpa" . "https://melpa.org/packages/")
-                        package-archives)
-                  (package-initialize))
-                LISP
-                echo EMACS="emacs -l $tmp ${lib.concatMapStringsSep " "
-                  (s: "-L " + s) lispDirs
-                }" >> $GITHUB_ENV
-              '';
-            }
-            {
-              name = "Install dependencies";
-              run = ''
-                packages=$(mktemp)
-                echo -n "Installed packages: "
-                cat <(jq -r '.nodes.root.inputs | map(.) | .[]' ${lockDirName}/flake.lock) \
-                  <(jq -r 'keys | .[]' ${lockDirName}/archive.lock) \
-                  <(echo ${lib.escapeShellArgs extraPackages}) \
-                  | tee "$packages" | xargs echo
+      steps = [
+        {
+          uses = "purcell/setup-emacs@master";
+          "with" = { version = "\${{ matrix.emacs_version }}"; };
+        }
+        {
+          uses = "actions/checkout@v2";
+        }
+        {
+          run = "echo LOCAL_PACKAGES=\"${concatStringsSep " " localPackages}\" >> $GITHUB_ENV";
+        }
+        {
+          name = "Set the arguments";
+          run = ''
+            tmp=$(mktemp)
+            cat > $tmp <<LISP
+            (progn
+              (require 'package)
+              (push '("melpa" . "https://melpa.org/packages/")
+                    package-archives)
+              (package-initialize))
+            LISP
+            echo EMACS="emacs -l $tmp ${lib.concatMapStringsSep " "
+              (s: "-L " + s) lispDirs}" >> $GITHUB_ENV
+          '';
+        }
+        {
+          name = "Install dependencies";
+          run = ''
+             packages=$(mktemp)
+             echo -n "Installed packages: "
+             cat <(jq -r '.nodes.root.inputs | map(.) | .[]' ${lockDirName}/flake.lock) \
+               <(jq -r 'keys | .[]' ${lockDirName}/archive.lock) \
+               <(echo ${lib.escapeShellArgs extraPackages}) \
+               | tee "$packages" | xargs echo
 
-                script=$(mktemp)
-                cat > $script <<LISP
-                (progn
-                  (when command-line-args-left
-                    (package-refresh-contents))
-                  (dolist (package-name command-line-args-left)
-                    (let ((package (intern package-name)))
-                       (when (and package
-                                  (not (memq package '(''${LOCAL_PACKAGES}))))
-                       (package-install (cadr (assq package 
-                                                    package-archive-contents)))))))
-               LISP
+             script=$(mktemp)
+             cat > $script <<LISP
+             (progn
+               (when command-line-args-left
+                 (package-refresh-contents))
+               (dolist (package-name command-line-args-left)
+                 (let ((package (intern package-name)))
+                    (when (and package
+                               (not (memq package '(''${LOCAL_PACKAGES}))))
+                    (package-install (cadr (assq package 
+                                                 package-archive-contents)))))))
+            LISP
 
-               xargs $EMACS -batch -l "$script" < "$packages"
-              '';
-            }
-            {
-              name = "Byte-compile";
-              "if" = "\${{ ${lib.boolToString compile} }}";
-              run = ''
-                $EMACS -batch -l bytecomp \
-                  --eval "(setq byte-compile-error-on-warn t)" \
-                  -f batch-byte-compile ${lib.escapeShellArgs lispFiles}
-              '';
-            }
-            {
-              name = description;
-              run = prependEmacsArgs (trim text);
-            }
-          ];
-        };
-      };
-    };
+            xargs $EMACS -batch -l "$script" < "$packages"
+          '';
+        }
+        {
+          name = "Byte-compile";
+          "if" = "\${{ ${lib.boolToString compile} }}";
+          run = ''
+            $EMACS -batch -l bytecomp \
+              --eval "(setq byte-compile-error-on-warn t)" \
+              -f batch-byte-compile ${lib.escapeShellArgs lispFiles}
+          '';
+        }
+      ] ++ map
+        ({ text, ... } @ args: {
+          text = prependEmacsArgs (trim text);
+        } // lib.optionalAttrs (args ? name) { inherit (args) name; })
+        steps;
+    }
+  ;
 in
-scripts:
-linkFarm "github-workflows"
+workflows:
+linkFarm "github-workflows" (lib.pipe workflows [
   (lib.mapAttrsToList
-    (name: options: {
-      name = "${name}.yml";
-      path = writeYAML "github-workflow-${name}" (makeWorkflow name options);
-    })
-    scripts)
+    (workflowName:
+      { name ? workflowName
+      , on ? null
+      , jobs
+      }: {
+        name = "${workflowName}.yml";
+        on = if on != null then on else {
+          push = {
+            paths = [ "**.el" ];
+          };
+        };
+        path = writeYAML "github-workflow-${workflowName}" {
+          inherit name on;
+          jobs = mapAttrs (_: makeJob) jobs;
+        };
+      }))
+])
