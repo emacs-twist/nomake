@@ -37,7 +37,7 @@ let
   # HACK
   prependEmacsArgs = cmdline:
     if match "emacs([[:space:]].+)" cmdline != null
-    then "emacs " + emacsArgs + head (filter isString (match "emacs([[:space:]].+)" cmdline))
+    then "$EMACS " + head (filter isString (match "emacs([[:space:]].+)" cmdline))
     else cmdline;
 
   indent = n: s:
@@ -84,33 +84,55 @@ let
               uses = "actions/checkout@v2";
             }
             {
+              run = "echo LOCAL_PACKAGES=\"${concatStringsSep " " localPackages}\" >> $GITHUB_ENV";
+            }
+            {
+              name = "Set the arguments";
+              run = ''
+                tmp=$(mktemp)
+                cat > $tmp <<LISP
+                (progn
+                  (require 'package)
+                  (push '("melpa" . "https://melpa.org/packages/")
+                        package-archives)
+                  (package-initialize))
+                LISP
+                echo EMACS="emacs -l $tmp ${lib.concatMapStringsSep " "
+                  (s: "-L " + s) lispDirs
+                }" >> $GITHUB_ENV
+              '';
+            }
+            {
               name = "Install dependencies";
               run = ''
+                packages=$(mktemp)
+                echo -n "Installed packages: "
                 cat <(jq -r '.nodes.root.inputs | map(.) | .[]' ${lockDirName}/flake.lock) \
                   <(jq -r 'keys | .[]' ${lockDirName}/archive.lock) \
-                  ${lib.optionalString (extraPackages != [ ])
-                    ("<(echo ${lib.escapeShellArgs extraPackages})")} \
-                  | xargs emacs -batch -l package --eval \
-                  "(progn
-                      (push '(\"melpa\" . \"https://melpa.org/packages/\")
-                            package-archives)
-                      (package-initialize)
-                      (when command-line-args-left
-                        (package-refresh-contents))
-                      (dolist (package-name command-line-args-left)
-                        (let ((package (intern package-name)))
-                           (when (and package
-                                      (not (memq package
-                                                 '(${concatStringsSep " " localPackages}))))
-                             (package-install (cadr (assq package 
-                                                          package-archive-contents)))))))"
+                  <(echo ${lib.escapeShellArgs extraPackages}) \
+                  | tee "$packages" | xargs echo
+
+                script=$(mktemp)
+                cat > $script <<LISP
+                (progn
+                  (when command-line-args-left
+                    (package-refresh-contents))
+                  (dolist (package-name command-line-args-left)
+                    (let ((package (intern package-name)))
+                       (when (and package
+                                  (not (memq package '(''${LOCAL_PACKAGES}))))
+                       (package-install (cadr (assq package 
+                                                    package-archive-contents)))))))
+               LISP
+
+               xargs $EMACS -batch -l "$script" < "$packages"
               '';
             }
             {
               name = "Byte-compile";
               "if" = "\${{ ${lib.boolToString compile} }}";
               run = ''
-                emacs -batch -l bytecomp ${emacsArgs} \
+                $EMACS -batch -l bytecomp \
                   --eval "(setq byte-compile-error-on-warn t)" \
                   -f batch-byte-compile ${lib.escapeShellArgs lispFiles}
               '';
