@@ -8,6 +8,7 @@
 , localPackages
 , extraPackages ? [ ]
 , scripts ? { }
+, github ? { }
 }:
 with builtins;
 let
@@ -69,8 +70,11 @@ let
   } ({
     lint = {
       description = "Run package-lint";
-      compile = false;
-      matrix = false;
+      compile = (github.lint or {}).compile or false;
+      matrix = (github.lint or {}).matrix or false;
+      github = {
+        name = "package-lint";
+      };
       extraPackages = [ "package-lint" ];
       # Only a single package is supported right now.
       text = ''
