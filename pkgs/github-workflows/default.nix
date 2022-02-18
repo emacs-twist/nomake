@@ -28,25 +28,11 @@ let
 
   trim = text: trimRight (trimLeft text);
 
-  emacsArgs = concatStringsSep " " ([
-    "-l package"
-    "--eval \"(push '(\\\"melpa\\\" . \\\"https://melpa.org/packages/\\\") package-archives)\""
-    "--eval \"(package-initialize)\""
-  ] ++ map (s: "-L " + s) lispDirs);
-
   # HACK
   prependEmacsArgs = cmdline:
     if match "emacs([[:space:]].+)" cmdline != null
     then "$EMACS " + head (filter isString (match "emacs([[:space:]].+)" cmdline))
     else cmdline;
-
-  indent = n: s:
-    let
-      lines = filter isString (split "\n" s);
-      pad = lib.fixedWidthString n " " "";
-    in
-    concatStringsSep "\n"
-      ([(head lines)] ++ map (s: pad + s) (tail lines));
 
   writeYAML = import ./yaml.nix {
     inherit json2yaml runCommandLocal;
