@@ -56,7 +56,7 @@ let
     , extraPackages ? [ ]
     , ...
     }: ''
-      name: '${name}'
+      name: '${github.name or name}'
       on: ${github.on or "{ push: { paths: [ '**.el' ] } }"}
       jobs:
         ${name}:

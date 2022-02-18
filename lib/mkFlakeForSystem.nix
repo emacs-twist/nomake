@@ -71,6 +71,9 @@ let
       description = "Run package-lint";
       compile = false;
       matrix = false;
+      github = {
+        name = "package-lint";
+      };
       extraPackages = [ "package-lint" ];
       # Only a single package is supported right now.
       text = ''
