@@ -184,7 +184,7 @@ The workflow files are available in =result= directory.
 To copy the files to the designated directory, you can use the following command:
 
 #+begin_src sh
-  cp -vL result/*.* .github/workflows/
+  install -m 644 result/*.* .github/workflows
 #+end_src
 ** Alternatives
 See [[https://github.com/alphapapa/makem.sh#comparisons][comparisons]] by the author of makem.
