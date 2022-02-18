@@ -1,5 +1,6 @@
 { lib
-, writeText
+, json2yaml
+, runCommandLocal
 , linkFarm
 , emacsCIVersions
 }:
@@ -47,7 +48,11 @@ let
     concatStringsSep "\n"
       ([(head lines)] ++ map (s: pad + s) (tail lines));
 
-  makeWorkflowBody = name:
+  writeYAML = import ./yaml.nix {
+    inherit json2yaml runCommandLocal;
+  };
+
+  makeWorkflow = name:
     { text
     , compile ? false
     , github ? { }
@@ -55,23 +60,33 @@ let
     , description ? null
     , extraPackages ? [ ]
     , ...
-    }: ''
-      name: '${github.name or name}'
-      on: ${github.on or "{ push: { paths: [ '**.el' ] } }"}
-      jobs:
-        ${name}:
-          runs-on: ubuntu-latest
-          strategy:
-            matrix:
-              emacs_version: ${toJSON (if matrix then emacsVersions else [ "snapshot" ])}
-          steps:
-          - uses: purcell/setup-emacs@master
-            with:
-              version: ''${{ matrix.emacs_version }}
-          - uses: actions/checkout@v2
-          - name: Install dependencies
-            run: |
-              cat <(jq -r '.nodes.root.inputs | map(.) | .[]' ${lockDirName}/flake.lock) \
+    }: {
+      name = github.name or name;
+      on = github.on or {
+        push = {
+          paths = [ "**.el" ];
+        };
+      };
+      jobs = {
+        ${name} = {
+          runs-on = "ubuntu-latest";
+          strategy = {
+            matrix = {
+              emacs_version = if matrix then emacsVersions else [ "snapshot" ];
+            };
+          };
+          steps = [
+            {
+              uses = "purcell/setup-emacs@master";
+              "with" = { version = "\${{ matrix.emacs_version }}"; };
+            }
+            {
+              uses = "actions/checkout@v2";
+            }
+            {
+              name = "Install dependencies";
+              run = ''
+                cat <(jq -r '.nodes.root.inputs | map(.) | .[]' ${lockDirName}/flake.lock) \
                   <(jq -r 'keys | .[]' ${lockDirName}/archive.lock) \
                   ${lib.optionalString (extraPackages != [ ])
                     ("<(echo ${lib.escapeShellArgs extraPackages})")} \
@@ -89,22 +104,31 @@ let
                                                  '(${concatStringsSep " " localPackages}))))
                              (package-install (cadr (assq package 
                                                           package-archive-contents)))))))"
-          - name: Byte-compile
-            if: ''${{ ${lib.boolToString compile} }}
-            run: |
-              emacs -batch -l bytecomp ${emacsArgs} \
-                --eval "(setq byte-compile-error-on-warn t)" \
-                -f batch-byte-compile ${lib.escapeShellArgs lispFiles}
-          - run: |
-              ${indent 8 (prependEmacsArgs (trim text))}
-            ${lib.optionalString (description != null) "name: ${description}"}
-    '';
+              '';
+            }
+            {
+              name = "Byte-compile";
+              "if" = "\${{ ${lib.boolToString compile} }}";
+              run = ''
+                emacs -batch -l bytecomp ${emacsArgs} \
+                  --eval "(setq byte-compile-error-on-warn t)" \
+                  -f batch-byte-compile ${lib.escapeShellArgs lispFiles}
+              '';
+            }
+            {
+              name = description;
+              run = prependEmacsArgs (trim text);
+            }
+          ];
+        };
+      };
+    };
 in
 scripts:
 linkFarm "github-workflows"
   (lib.mapAttrsToList
     (name: options: {
       name = "${name}.yml";
-      path = writeText "github-workflow-${name}" (makeWorkflowBody name options);
+      path = writeYAML "github-workflow-${name}" (makeWorkflow name options);
     })
     scripts)
