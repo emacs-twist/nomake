@@ -88,6 +88,13 @@ in
 {
   packages = {
     emacs = emacsConfig;
+    elisp-packages = pkgs.linkFarm "elisp-packages"
+      (lib.mapAttrsToList
+        (name: drv: {
+          inherit name;
+          path = "${drv.outPath}/share/emacs/site-lisp";
+        })
+        elispPackages);
     inherit (admin) lock;
     inherit update;
     inherit (pkgs.nomake) nomake;
