@@ -194,3 +194,8 @@ The goal of this project is to provide a framework for consistent quality contro
 Consistency does not always mean /the most strict/ or /supporting as many as checks as possible/.
 
 Compared to the previous iteration, it avoids impure Nix code for maintainability.
+** Credits
+Some of the Emacs Lisp code in this repository are based on the following projects:
+
+- [[https://github.com/alphapapa/makem.sh][makem.sh]] by Adam Porter (a.k.a. alphapapa)
+- Linting code for [[https://github.com/purcell/package-lint/][package-lint]] by Steve Purcell
