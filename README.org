@@ -199,3 +199,6 @@ Some of the Emacs Lisp code in this repository are based on the following projec
 
 - [[https://github.com/alphapapa/makem.sh][makem.sh]] by Adam Porter (a.k.a. alphapapa)
 - Linting code for [[https://github.com/purcell/package-lint/][package-lint]] by Steve Purcell
+** License
+Because this repository contains some linting code from GPL 3.0-licensed repositories, the entire repository is licensed under GPL v3.
+You will have to license your projects under GPL too.
