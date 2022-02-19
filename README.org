@@ -190,5 +190,7 @@ To copy the files to the designated directory, you can use the following command
 See [[https://github.com/alphapapa/makem.sh#comparisons][comparisons]] by the author of makem.
 
 At present, nomake doesn't have as many features as makem, nor is it mature.
-The focus of this project is about consistent quality control across multiple projects (primarily for emacs-twist) and trying to shift more tasks to Nix.
-It avoids impure Nix code, unlike the former version.
+The goal of this project is to provide a framework for consistent quality control over Emacs Lisp library code.
+Consistency does not always mean /the most strict/ or /supporting as many as checks as possible/.
+
+Compared to the previous iteration, it avoids impure Nix code for maintainability.
