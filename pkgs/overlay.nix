@@ -44,11 +44,12 @@ in {
         package-lint = self.callPackage ./plugins/package-lint {
           inherit (self.emacsConfigForLint.elispPackages) package-lint;
         };
+        check-declare = self.callPackage ./plugins/check-declare { };
         byte-compile-and-load = self.callPackage ./plugins/byte-compile { };
         elsa = self.callPackage ./plugins/elsa { };
       };
 
-      enabledPlugins = [ "package-lint" "byte-compile-and-load" ];
+      enabledPlugins = [ "package-lint" "check-declare" "byte-compile-and-load" ];
     };
 
     mkEmacsConfigForDevelopment =
