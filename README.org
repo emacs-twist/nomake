@@ -10,7 +10,7 @@ NoMake is a framework that runs various checks against Emacs Lisp packages.
 It is an alternative to [[https://github.com/cask/cask][Cask]], [[https://github.com/alphapapa/makem.sh][makem.sh]], [[https://github.com/riscy/melpazoid/][melpazoid]], [[https://github.com/vermiculus/emake.el][emake]], [[https://gitea.petton.fr/DamienCassou/makel/][makel]], etc., but Nix-oriented and based on [[https://github.com/emacs-twist/twist.nix][twist]].
 It is yet a new iteration of [[https://github.com/akirak/elinter/][elinter]] (a.k.a. emacs-package-checker, melpa-check, etc.).
 
-It is meant for use in [[https://github.com/orgs/emacs-twist/][emacs-twist]] org and my other Emacs Lisp packages.
+It is primarily developed for [[https://github.com/orgs/emacs-twist/][emacs-twist]] org and my other Emacs Lisp packages.
 
 NoMake heavily depends on [[https://nixos.wiki/wiki/Flakes][Nix flakes]], and you will need an understanding of flakes to use it.
 :CONTENTS:
