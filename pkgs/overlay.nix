@@ -4,15 +4,25 @@ let
   inherit (prev) lib;
   inherit (inputs.gitignore.lib) gitignoreSource;
 
+  # HACK: Access niv sources of nix-emacs-ci
+  pinnedNixpkgs = (import (inputs.emacs-ci + "/nix/sources.nix")).nixpkgs;
+
+  # Use the same version of nixpkgs as nix-emacs-ci to utilize binary cache on CI
+  emacsPackages = import pinnedNixpkgs {
+    inherit (prev) system;
+    overlays = [
+      (import (inputs.emacs-ci + "/overlay.nix"))
+    ];
+  };
+
   pkgs = lib.composeManyExtensions [
-    (import (inputs.emacs-ci + "/overlay.nix"))
     inputs.twist.overlay
   ] final prev;
 in {
   nomake = lib.makeScope prev.newScope (self: {
-    emacs = pkgs.emacs-snapshot;
+    emacs = emacsPackages.emacs-snapshot;
 
-    emacsCIVersions = lib.getAttrs pkgs.emacs-ci-versions pkgs;
+    emacsCIVersions = lib.getAttrs emacsPackages.emacs-ci-versions emacsPackages;
 
     emacsConfigForLint = self.callPackage ./emacs-config {
       inherit (pkgs) emacsTwist;
