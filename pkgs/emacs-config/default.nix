@@ -20,6 +20,7 @@ in
   inherit extraPackages lockDir;
   # TODO: Allow composing overrides
   inputOverrides = (import ./workarounds.nix) // inputOverrides;
+  wantExtraOutputs = false;
 }).overrideScope' (_self: super: {
   elispPackages = super.elispPackages.overrideScope' (
     lib.composeExtensions
