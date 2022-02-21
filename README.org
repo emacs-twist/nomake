@@ -29,7 +29,7 @@ The following is a list of checks I plan to support:
 
 - [X] [[https://github.com/purcell/package-lint/][package-lint]]
 - [X] byte-compile with multiple Emacs versions
-- [ ] check-declare
+- [X] check-declare
 - [ ] checkdoc with custom settings
 - [ ] [[https://github.com/emacs-elsa/Elsa][ELSA]] with custom rules
 
