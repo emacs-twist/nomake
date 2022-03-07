@@ -1,6 +1,7 @@
 name: Update dependencies
 
 on:
+  push:
   schedule:
     - cron: '0 5 * * *'
 
