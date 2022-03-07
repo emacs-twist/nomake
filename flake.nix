@@ -1,5 +1,5 @@
 {
-  description = "Minimal flake project";
+  description = "NoMake Emacs Lisp linting and testing framework";
 
   inputs = {
     flake-utils = {
@@ -12,6 +12,8 @@
     };
 
     twist.url = "github:emacs-twist/twist.nix";
+    # Required for Emacs executables. You should use the same version of nixpkgs to
+    # take advantage of binary cache
     emacs-ci = {
       url = "github:purcell/nix-emacs-ci";
       flake = false;
@@ -25,6 +27,9 @@
       flake = false;
     };
 
+    # These inputs should follow their corresponding inputs of the caller (i.e.
+    # packages under test). We don't have to update these inputs in this
+    # repository regularly.
     melpa = {
       url = "github:melpa/melpa";
       flake = false;
