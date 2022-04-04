@@ -35,11 +35,11 @@
     "emacs-ci": {
       "flake": false,
       "locked": {
-        "lastModified": 1647251620,
-        "narHash": "sha256-DNDoid9YmRZ0qoa+B/RyHpTMMR994uZ84XaW0F6ip70=",
+        "lastModified": 1649081576,
+        "narHash": "sha256-jTPTcKqdqMlgL9LWgz9S/8uRwpwpA4W6koxY+9n7Y8w=",
         "owner": "purcell",
         "repo": "nix-emacs-ci",
-        "rev": "828b5cf55de04f0da579d00820a2bf6d3f6e1fcc",
+        "rev": "0cb9368d14ba83f2fc4dfeb85a70f9eb64986fba",
         "type": "github"
       },
       "original": {
@@ -148,11 +148,11 @@
     "package-lint": {
       "flake": false,
       "locked": {
-        "lastModified": 1644764238,
-        "narHash": "sha256-3jyAylJJTd0N5r3v7Ov22Xturdk7qR1W2z2Qae+3UYM=",
+        "lastModified": 1649076230,
+        "narHash": "sha256-o5hAYEzvqkqJIWLxbaMBE7vy2ij5sfzgX6Xx/LGiqwE=",
         "owner": "purcell",
         "repo": "package-lint",
-        "rev": "873025ffc85b5e40ec361e953218fa09c6ebd621",
+        "rev": "6ca68488851404a41dbf993095eeb49f76dff877",
         "type": "github"
       },
       "original": {
