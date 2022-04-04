@@ -87,6 +87,25 @@ In the =outputs= section of flake.nix, set =localPackages= to a list of packages
     ];
   }
 #+end_src
+**** Explicitly install packages
+You may sometimes want to explicitly install a particular package.
+This applies if you depend on packages such as =org= and =project=.
+They are shipped with Emacs but also actively developed, so older versions of Emacs ship outdated versions of packages.
+In this situation, you should list them in =extraPackages=:
+
+#+begin_src nix
+  nomake.lib.mkFlake {
+    src = ./.;
+    localPackages = [
+      "nice-mode"
+    ];
+    extraPackages = [
+      # Explicitly install org packages rather than depending on the built-in
+      # version
+      "org"
+    ];
+  }
+#+end_src
 *** Development workflow
 This subsection describes how to use nomake locally during development.
 
@@ -121,13 +140,11 @@ To define a script, edit flake.nix and add =scripts= attribute:
     localPackages = [
       "nice-mode"
     ];
-    extraPackages = [
-      "buttercup"
-    ];
     scripts = {
       test = {
         description = "Run buttercup tests";
         compile = true;
+        extraPackages = [ "buttercup" ];
         text = ''
           emacs -batch -l buttercup -f buttercup-run-discover "$PWD"
         '';
@@ -147,6 +164,10 @@ To run the script, you can use =nix run=:
 #+end_src
 
 The application name (=test= in this case) is the same as the name of the script defined in the flake.
+
+Note that you can specify =extraPackages= either as a sibling of =localPackages= or inside a script block.
+Wherever you define extra packages, it has the same effect.
+If you define multiple =extraPackages= attributes in different places, they are merged.
 ***** Run a script with a different Emacs version
 It is possible to run a script with different versions of Emacs.
 You can pick a version available from nix-emacs-ci, but only required executables are downloaded from the binary cache.
