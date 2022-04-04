@@ -24,7 +24,12 @@ let
   inherit (pkgs.nomake) emacsCIVersions;
 
   emacsConfig = lib.makeOverridable pkgs.nomake.mkEmacsConfigForDevelopment {
-    inherit src lockDirName localPackages extraPackages;
+    inherit src lockDirName localPackages;
+    extraPackages =
+      lib.unique
+        (extraPackages ++
+          lib.flatten (lib.mapAttrsToList (_: xs: xs.extraPackages or [ ]) scripts)
+        );
   };
 
   elispPackages = lib.getAttrs localPackages emacsConfig.elispPackages;
