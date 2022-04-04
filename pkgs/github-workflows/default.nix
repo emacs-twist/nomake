@@ -68,7 +68,7 @@ let
           - uses: purcell/setup-emacs@master
             with:
               version: ''${{ matrix.emacs_version }}
-          - uses: actions/checkout@v2
+          - uses: actions/checkout@v3
           - name: Install dependencies
             run: |
               cat <(jq -r '.nodes.root.inputs | map(.) | .[]' ${lockDirName}/flake.lock) \
