@@ -80,7 +80,7 @@ in {
           src = gitignoreSource src;
         });
       } // lib.optionalAttrs compile {
-        elispPackageOverrides = _eself: esuper: 
+        elispPackageOverrides = _eself: esuper:
           lib.genAttrs localPackages (ename: esuper.${ename}.overrideAttrs (_: {
             dontByteCompile = false;
             errorOnWarn = true;
