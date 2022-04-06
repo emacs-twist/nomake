@@ -4,22 +4,28 @@
 writers.writeBashBin "package-lint" ''
   set -euo pipefail
 
-  autoloads=$(ls *-autoloads.el)
-
-  if [[ "$autoloads" =~ (.+)-autoloads.el ]]
-  then
-    main_file="''${BASH_REMATCH[1]}.el"
-  fi
-
   files=()
   for f in *.el
   do
-    if [[ "$f" = *-autoloads.el ]]
+    if [[ "$f" =~ (.+)-autoloads.el ]]
     then
+      main_file="''${BASH_REMATCH[1]}.el"
       continue
     fi
     files+=("$f")
   done
+
+  # If the package has no autoloads, set main_file somehow
+  if [[ ! -v main_file ]]
+  then
+    if [[ ''${#files[*]} -eq 1 ]]
+    then
+      main_file=''${files[*]}
+    else
+      # Guess the main file from the directory
+      main_file=$(basename "$PWD").el
+    fi
+  fi
 
   emacs_dir="''${XDG_DATA_HOME:-$HOME/.local/share}/nomake"
   mkdir -p "''${emacs_dir}"
