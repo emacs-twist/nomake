@@ -14,7 +14,7 @@ in
 (emacsTwist {
   emacsPackage = emacs;
   inventories = import ./inventories.nix {
-    inherit (inputs) gnu-elpa melpa;
+    inherit (inputs) gnu-elpa melpa epkgs emacs;
   };
   initFiles = [ ];
   inherit extraPackages lockDir;

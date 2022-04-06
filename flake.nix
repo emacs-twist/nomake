@@ -38,6 +38,14 @@
       url = "git+https://git.savannah.gnu.org/git/emacs/elpa.git?ref=main";
       flake = false;
     };
+    epkgs = {
+      url = "github:emacsmirror/epkgs";
+      flake = false;
+    };
+    emacs = {
+      url = "github:emacs-mirror/emacs";
+      flake = false;
+    };
   };
 
   outputs =
