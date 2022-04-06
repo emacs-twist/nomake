@@ -32,6 +32,22 @@
         "type": "github"
       }
     },
+    "emacs": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1649249286,
+        "narHash": "sha256-QAXd0BO5TlTY7OaFg1boIvYFZdKS/apO3TAkMIgj5wc=",
+        "owner": "emacs-mirror",
+        "repo": "emacs",
+        "rev": "fc62efc563733819795441d41ce450d64c56ed48",
+        "type": "github"
+      },
+      "original": {
+        "owner": "emacs-mirror",
+        "repo": "emacs",
+        "type": "github"
+      }
+    },
     "emacs-ci": {
       "flake": false,
       "locked": {
@@ -45,6 +61,22 @@
       "original": {
         "owner": "purcell",
         "repo": "nix-emacs-ci",
+        "type": "github"
+      }
+    },
+    "epkgs": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1649191032,
+        "narHash": "sha256-PbD3EWadGoAxJiAOoW1YfIymm7avAZVCaKG0xoa7/dc=",
+        "owner": "emacsmirror",
+        "repo": "epkgs",
+        "rev": "b0916ae4cb3753a23d47ac21e4c77df3c9949af4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "emacsmirror",
+        "repo": "epkgs",
         "type": "github"
       }
     },
@@ -164,7 +196,9 @@
     "root": {
       "inputs": {
         "elsa": "elsa",
+        "emacs": "emacs",
         "emacs-ci": "emacs-ci",
+        "epkgs": "epkgs",
         "flake-utils": "flake-utils",
         "gitignore": "gitignore",
         "gnu-elpa": "gnu-elpa",
