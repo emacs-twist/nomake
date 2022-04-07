@@ -13,11 +13,21 @@
       # url = "github:OWNER/melpa/BRANCH";
       flake = false;
     };
+    epkgs = {
+      url = "github:emacsmirror/epkgs";
+      flake = false;
+    };
+    emacs = {
+      url = "github:emacs-mirror/emacs";
+      flake = false;
+    };
 
     nomake = {
       url = "github:emacs-twist/nomake";
       inputs.gnu-elpa.follows = "gnu-elpa";
       inputs.melpa.follows = "melpa";
+      inputs.epkgs.follows = "epkgs";
+      inputs.emacs.follows = "emacs";
     };
   };
 
