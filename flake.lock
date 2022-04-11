@@ -180,11 +180,11 @@
     "package-lint": {
       "flake": false,
       "locked": {
-        "lastModified": 1649076230,
-        "narHash": "sha256-o5hAYEzvqkqJIWLxbaMBE7vy2ij5sfzgX6Xx/LGiqwE=",
+        "lastModified": 1649422046,
+        "narHash": "sha256-+q4LmVeRaQ0DpjryK+i3YRndy/8hWk7eYPmyDxxzqJw=",
         "owner": "purcell",
         "repo": "package-lint",
-        "rev": "6ca68488851404a41dbf993095eeb49f76dff877",
+        "rev": "9e8c2d1f945c032ce310d37fcf6afee25980f152",
         "type": "github"
       },
       "original": {
@@ -214,11 +214,11 @@
         "fromElisp": "fromElisp"
       },
       "locked": {
-        "lastModified": 1649262618,
-        "narHash": "sha256-dy1R0sbSHuIzO3N1ncv/V25/mupoKq7VmKdgaD6ykC4=",
+        "lastModified": 1649589280,
+        "narHash": "sha256-fmV4clTj82UblkB8fBunOI842og+GO5OFEEGV2v2Yus=",
         "owner": "emacs-twist",
         "repo": "twist.nix",
-        "rev": "48063e09a5a7b1a3c58a5aeea159a738053edd5c",
+        "rev": "8ff3b6d900a82849d31341caeb0cac3a3f33127a",
         "type": "github"
       },
       "original": {
