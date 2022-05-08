@@ -17,13 +17,8 @@ jobs:
           | grep -vE '^(melpa|gnu-elpa|epkgs|emacs|nixpkgs|root)$' \
           | sed -e 's/^/--update-input /' \
           | xargs nix flake lock
-    - name: Check differences
-      run: git diff-index --exit-code --name-status HEAD
-      id: diff
-      continue-on-error: true
     - name: Create a pull request
       uses: peter-evans/create-pull-request@v4.0.2
-      if: ${{ steps.diff.outcome == 'failure' }}
       with:
         commit-message: 'Update flake inputs'
         base: master
