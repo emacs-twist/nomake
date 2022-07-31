@@ -3,8 +3,6 @@ name: Update dependencies
 on:
   schedule:
     - cron: '0 5 * * *'
-  repository_dispatch:
-    types: [update_inputs]
 
 jobs:
   update:
