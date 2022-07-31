@@ -5,7 +5,9 @@ let
   inherit (inputs.gitignore.lib) gitignoreSource;
 
   # HACK: Access niv sources of nix-emacs-ci
-  pinnedNixpkgs = (import (inputs.emacs-ci + "/nix/sources.nix")).nixpkgs;
+  pinnedNixpkgs = (import (inputs.emacs-ci + "/nix/sources.nix") {
+    inherit (prev) system;
+  }).nixpkgs;
 
   # Use the same version of nixpkgs as nix-emacs-ci to utilize binary cache on CI
   emacsPackages = import pinnedNixpkgs {

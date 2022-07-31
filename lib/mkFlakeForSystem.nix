@@ -42,13 +42,15 @@ let
     maxVersion
   ];
 
-  admin = emacsConfig.admin lockDirName;
+  apps = emacsConfig.makeApps {
+    inherit lockDirName;
+  };
 
   update = pkgs.writeShellScriptBin "update" ''
     set -euo pipefail
 
     nix flake lock --update-input nomake
-    ${admin.update}/bin/lock
+    ${admin.update.program}
     cd ${lockDirName}
     nix flake update
   '';
@@ -96,11 +98,14 @@ in
 {
   packages = {
     emacs = emacsConfig;
-    inherit (admin) lock;
     inherit update;
     inherit (pkgs.nomake) nomake;
     github-workflows = scriptWorkflows;
   } // scriptPackages;
+
+  apps = {
+    inherit (apps) lock;
+  };
 
   inherit elispPackages;
 }
