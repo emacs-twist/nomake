@@ -18,7 +18,7 @@ jobs:
           | sed -e 's/^/--update-input /' \
           | xargs nix flake lock
     - name: Create a pull request
-      uses: peter-evans/create-pull-request@v4.0.2
+      uses: peter-evans/create-pull-request@v4
       with:
         commit-message: 'Update flake inputs'
         base: master
