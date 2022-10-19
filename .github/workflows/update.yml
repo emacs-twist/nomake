@@ -14,7 +14,7 @@ jobs:
       # Only update meaningful lock entries.
       run: |
         jq -r '.nodes.root.inputs | map(.) | .[]' flake.lock \
-          | grep -vE '^(melpa|gnu-elpa|epkgs|emacs|nixpkgs|root)$' \
+          | grep -vE '^(melpa|gnu-elpa|epkgs|emacs|emacs-ci|nixpkgs|root)$' \
           | sed -e 's/^/--update-input /' \
           | xargs nix flake lock
     - name: Create a pull request
