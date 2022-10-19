@@ -4,7 +4,6 @@
   inputs = {
     flake-utils = {
       url = "github:numtide/flake-utils";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     gitignore = {
       url = "github:hercules-ci/gitignore.nix";

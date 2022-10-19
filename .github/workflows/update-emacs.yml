@@ -1,0 +1,30 @@
+# This workflow updates Emacs. Alternatively, the user of an individual
+# repository can pick a particular version of emacs-ci by specifying
+# inputs.emacs-ci.follows in flake.nix.
+name: Update Emacs
+
+# This workflow is basically intended for manual updating, but it will be also
+# run monthly just in case of the maintainer forgetting to do so. The repository
+# will get an update of the snapshot build every month.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 5 1 * *'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: cachix/install-nix-action@v18
+    - name: Update inputs
+      run: nix flake lock --update-input emacs-ci
+    - name: Create a pull request
+      uses: peter-evans/create-pull-request@v4
+      with:
+        commit-message: 'Update emacs-ci input'
+        base: master
+        title: 'chore(deps): Update Emacs'
+        branch: create-pull-request/update-emacs
+        delete-branch: true
+        labels: automation,update
