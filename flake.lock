@@ -82,11 +82,11 @@
     },
     "flake-utils": {
       "locked": {
-        "lastModified": 1667077288,
-        "narHash": "sha256-bdC8sFNDpT0HK74u9fUkpbf1MEzVYJ+ka7NXCdgBoaA=",
+        "lastModified": 1667395993,
+        "narHash": "sha256-nuEHfE/LcWyuSWnS8t12N1wc105Qtau+/OdUAjtQ0rA=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "6ee9ebb6b1ee695d2cacc4faa053a7b9baa76817",
+        "rev": "5aed5285a952e0b949eb3ba02c12fa4fcfef535f",
         "type": "github"
       },
       "original": {
@@ -213,11 +213,11 @@
         "fromElisp": "fromElisp"
       },
       "locked": {
-        "lastModified": 1666925171,
-        "narHash": "sha256-jJENR4ePur6JOPdG8FFpsIUM+5aSs28dpJtJnQC6nTI=",
+        "lastModified": 1668522452,
+        "narHash": "sha256-+rSZ1/dhWQjzF2tmTMuI5d5LlRGqLpg+YPPdPZXZ81k=",
         "owner": "emacs-twist",
         "repo": "twist.nix",
-        "rev": "3fa668ce59c34bffc9e403caabc4b22a411f2286",
+        "rev": "e793b2b3e91a409ab7cef7def23460f1352df894",
         "type": "github"
       },
       "original": {
