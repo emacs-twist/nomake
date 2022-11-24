@@ -145,6 +145,9 @@ To define a script, edit flake.nix and add =scripts= attribute:
         description = "Run buttercup tests";
         compile = true;
         extraPackages = [ "buttercup" ];
+        runtimeInputsFromPkgs = pkgs: [
+          pkgs.hello
+        ];
         text = ''
           emacs -batch -l buttercup -f buttercup-run-discover "$PWD"
         '';
@@ -164,6 +167,8 @@ To run the script, you can use =nix run=:
 #+end_src
 
 The application name (=test= in this case) is the same as the name of the script defined in the flake.
+
+By adding =runtimeInputsFromPkgs=, you can specify executables which will become available in the runtime environment of the script.
 
 Note that you can specify =extraPackages= either as a sibling of =localPackages= or inside a script block.
 Wherever you define extra packages, it has the same effect.

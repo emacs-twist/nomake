@@ -9,6 +9,8 @@
 , extraPackages ? [ ]
 , scripts ? { }
 , github ? { }
+# nixpkgs overlays
+, overlays ? []
 }:
 with builtins;
 let
@@ -16,7 +18,7 @@ let
 
   pkgs = import nixpkgs {
     inherit system;
-    overlays = [
+    overlays = overlays ++ [
       overlay
     ];
   };
@@ -57,7 +59,7 @@ let
 
   scriptPackages = lib.mapAttrs
     (pkgs.nomake.makeScriptPackage {
-      inherit minimumEmacsVersion emacsConfig;
+      inherit minimumEmacsVersion emacsConfig pkgs;
     })
     scripts;
 
