@@ -3,11 +3,11 @@
     "buttercup": {
       "flake": false,
       "locked": {
-        "lastModified": 1648586608,
-        "narHash": "sha256-qGZYc9ECJ28ZjazpGUqY8Z7fdbdWCA0/ujtd0CWD8qA=",
+        "lastModified": 1665959941,
+        "narHash": "sha256-CzhXFYme8KTVQkk3HXSDlQ8xIbZ826741gUfQzW+xog=",
         "owner": "jorgenschaefer",
         "repo": "emacs-buttercup",
-        "rev": "f5cbf97e1086441b2d6fa3ea240758b932c7c5e1",
+        "rev": "001adc064170b1e5beff3bc5a50c40f6c1949bbb",
         "type": "github"
       },
       "original": {
@@ -19,11 +19,11 @@
     "dash": {
       "flake": false,
       "locked": {
-        "lastModified": 1649102661,
-        "narHash": "sha256-9FbZSKIqqNEpUAvEkpOnA6OmiF0JdDsiGpti7SvFDNI=",
+        "lastModified": 1665650208,
+        "narHash": "sha256-b0dAQPHOv0oZkmkV/0kHqSWwz45W1mWrx1Iv83/M6B0=",
         "owner": "magnars",
         "repo": "dash.el",
-        "rev": "dc61f4641779616122692e34a32ba2a158ee034c",
+        "rev": "3df46d7d9fe74f52a661565888e4d31fd760f0df",
         "type": "github"
       },
       "original": {

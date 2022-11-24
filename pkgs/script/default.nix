@@ -5,6 +5,8 @@
 # Arguments specific to a repository
 { minimumEmacsVersion
 , emacsConfig
+# pkgs with user overlays applied
+, pkgs
 }:
 with builtins;
 let
@@ -16,9 +18,9 @@ let
         minimumEmacsVersion >= 0))
   ];
 
-  makeScriptDerivation = { name, emacs, text }: writeShellApplication {
+  makeScriptDerivation = { name, emacs, runtimeInputs, text }: writeShellApplication {
     inherit name;
-    runtimeInputs = [
+    runtimeInputs = runtimeInputs ++ [
       emacs
     ];
     inherit text;
@@ -27,12 +29,14 @@ in
 prefix:
 { text
 , compile ? false
+, runtimeInputsFromPkgs ? (_: [])
 , ...
 }:
 let
   origDerivation = makeScriptDerivation {
     name = prefix;
     emacs = emacsConfig.override { inherit compile; };
+    runtimeInputs = runtimeInputsFromPkgs pkgs;
     inherit text;
   };
 
@@ -42,6 +46,7 @@ let
       emacs = emacsCIVersions.${emacsVersion};
       inherit compile;
     };
+    runtimeInputs = runtimeInputsFromPkgs pkgs;
     inherit text;
   };
 in

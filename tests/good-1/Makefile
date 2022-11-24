@@ -9,6 +9,10 @@ lock: update-nomake
 	$(NIX) run .#lock --impure
 .PHONY: lock
 
+test: update-nomake
+	$(NIX) run .#test
+.PHONY: test
+
 update-nomake:
 	$(NIX) flake lock --update-input nomake $(NIX_OPTIONS)
 .PHONY: update-nomake

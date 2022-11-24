@@ -48,6 +48,9 @@
           extraPackages = [
             "buttercup"
           ];
+          runtimeInputsFromPkgs = pkgs: [
+            pkgs.hello
+          ];
           text = ''
             emacs -batch -l buttercup -f buttercup-run-discover "$PWD"
           '';
