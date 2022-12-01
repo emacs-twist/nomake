@@ -48,7 +48,7 @@ let
     inherit lockDirName;
   };
 
-  update = pkgs.writeShellScriptBin "update" ''
+  update = pkgs.writeShellScript "update" ''
     set -euo pipefail
 
     nix flake lock --update-input nomake
@@ -100,13 +100,16 @@ in
 {
   packages = {
     emacs = emacsConfig;
-    inherit update;
     inherit (pkgs.nomake) nomake;
     github-workflows = scriptWorkflows;
   } // scriptPackages;
 
   apps = {
     inherit (apps) lock;
+    update = {
+      type = "app";
+      program = "${update}";
+    };
   };
 
   inherit elispPackages;
