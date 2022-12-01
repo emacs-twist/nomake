@@ -52,7 +52,7 @@ let
     set -euo pipefail
 
     nix flake lock --update-input nomake
-    ${admin.update.program}
+    ${apps.update.program}
     cd ${lockDirName}
     nix flake update
   '';
