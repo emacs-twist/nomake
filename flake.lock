@@ -51,11 +51,11 @@
     "emacs-ci": {
       "flake": false,
       "locked": {
-        "lastModified": 1666944771,
-        "narHash": "sha256-e2TD8J9bwShyM5YkvjDUSD55OaDV6RauJKU9MthF7jQ=",
+        "lastModified": 1669641355,
+        "narHash": "sha256-JaXHIrAokmeez9liWsun7gofUIWtKY8p0DgrRgFxdVc=",
         "owner": "purcell",
         "repo": "nix-emacs-ci",
-        "rev": "54dc89d71e20e01451b33d6c18261916bcef8615",
+        "rev": "aff5c34f1c4d0351fd6870134cf86853d5e0dcc4",
         "type": "github"
       },
       "original": {
