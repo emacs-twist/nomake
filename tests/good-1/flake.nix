@@ -52,7 +52,7 @@
             pkgs.hello
           ];
           text = ''
-            emacs -batch -l buttercup -f buttercup-run-discover "$PWD"
+            emacs -batch -l buttercup -L . -f buttercup-run-discover
           '';
         };
       };

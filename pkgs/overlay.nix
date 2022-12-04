@@ -18,7 +18,7 @@ let
   };
 
   pkgs = lib.composeManyExtensions [
-    inputs.twist.overlay
+    inputs.twist.overlays.default
   ] final prev;
 in {
   nomake = lib.makeScope prev.newScope (self: {
