@@ -3,11 +3,11 @@
     "elisp-helpers": {
       "flake": false,
       "locked": {
-        "lastModified": 1665027644,
-        "narHash": "sha256-S55qcQBNZcwA2UKRd3Xxv+T9liuWNiGhi2u0GvzYoeo=",
+        "lastModified": 1670660561,
+        "narHash": "sha256-cqRF2OZcJyMq6f5OpGC5hRvWJM1/xZmU+WGguKhp1+w=",
         "owner": "emacs-twist",
         "repo": "elisp-helpers",
-        "rev": "f3ff71386581b89eff58074ec7080c7326a17dca",
+        "rev": "603e1e097cce75a1e1e9efa06705796d55ffc44e",
         "type": "github"
       },
       "original": {
@@ -213,11 +213,11 @@
         "fromElisp": "fromElisp"
       },
       "locked": {
-        "lastModified": 1670134051,
-        "narHash": "sha256-WvXF5NDFU28kzyirYLtfOFdVHSLLzdWNPcnnCVUfx3Y=",
+        "lastModified": 1671166215,
+        "narHash": "sha256-tL783PX22q/cSQlExo2ZlrVFZksOObBd9s160qIodVM=",
         "owner": "emacs-twist",
         "repo": "twist.nix",
-        "rev": "60fb76a8020d0449fafebeffaf8bc4a46db7eb94",
+        "rev": "5058ba1433ac07f00855c554e508101e7c81af7e",
         "type": "github"
       },
       "original": {
