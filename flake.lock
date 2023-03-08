@@ -19,11 +19,11 @@
     "elsa": {
       "flake": false,
       "locked": {
-        "lastModified": 1678034716,
-        "narHash": "sha256-0itEzOpCjRT7lZ7RGIRlkYk5McnRjyfNC03AILSN5tE=",
+        "lastModified": 1678142763,
+        "narHash": "sha256-FR5jW+WO3xei8rW92w1lZWrydSAjVd2FexmujvqvjBA=",
         "owner": "emacs-elsa",
         "repo": "Elsa",
-        "rev": "1fb0f698d9305bcfb501aca1ae9476979ed67117",
+        "rev": "71e8b3f2e79878b2df9990ecabd7eb3b740f23b4",
         "type": "github"
       },
       "original": {
