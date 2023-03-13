@@ -21,10 +21,10 @@
       url = "github:purcell/package-lint";
       flake = false;
     };
-    elsa = {
-      url = "github:emacs-elsa/Elsa";
-      flake = false;
-    };
+    # elsa = {
+    #   url = "github:emacs-elsa/Elsa";
+    #   flake = false;
+    # };
 
     # These inputs should follow their corresponding inputs of the caller (i.e.
     # packages under test). We don't have to update these inputs in this
@@ -84,7 +84,7 @@
     in
     {
       packages = flake-utils.lib.flattenTree {
-        inherit (pkgs.nomake) nomake elsa;
+        inherit (pkgs.nomake) nomake;
       };
 
       apps.lock = mkApp {
