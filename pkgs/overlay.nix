@@ -32,7 +32,7 @@ in {
 
       extraPackages = [
         "package-lint"
-        "elsa"
+        # "elsa"
       ];
       lockDir = ./emacs-config/lock;
       # Allow the user to update lint packages
@@ -40,15 +40,15 @@ in {
         package-lint = _: _: {
           src = inputs.package-lint;
         };
-        elsa = _: _: {
-          src = inputs.elsa;
-        };
+        # elsa = _: _: {
+        #   src = inputs.elsa;
+        # };
       };
     };
 
-    elsa = self.callPackage ./elsa {
-      emacsWithElsa = self.emacsConfigForLint;
-    };
+    # elsa = self.callPackage ./elsa {
+    #   emacsWithElsa = self.emacsConfigForLint;
+    # };
 
     nomake = lib.makeOverridable (self.callPackage ./nomake { }) {
       # TODO: Use a proper module API
@@ -58,7 +58,7 @@ in {
         };
         check-declare = self.callPackage ./plugins/check-declare { };
         byte-compile-and-load = self.callPackage ./plugins/byte-compile { };
-        elsa = self.callPackage ./plugins/elsa { };
+        # elsa = self.callPackage ./plugins/elsa { };
       };
 
       enabledPlugins = [ "package-lint" "check-declare" "byte-compile-and-load" ];
