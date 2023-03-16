@@ -13,6 +13,10 @@ test: update-nomake
 	$(NIX) run .#test
 .PHONY: test
 
+update:
+	$(NIX) flake update $(NIX_OPTIONS)
+.PHONY: update
+
 update-nomake:
 	$(NIX) flake lock --update-input nomake $(NIX_OPTIONS)
 .PHONY: update-nomake
