@@ -13,10 +13,8 @@
     twist.url = "github:emacs-twist/twist.nix";
     # Required for Emacs executables. You should use the same version of nixpkgs to
     # take advantage of binary cache
-    emacs-ci = {
-      url = "github:purcell/nix-emacs-ci";
-      flake = false;
-    };
+    emacs-ci.url = "github:purcell/nix-emacs-ci";
+
     package-lint = {
       url = "github:purcell/package-lint";
       flake = false;
@@ -54,7 +52,10 @@
     , ...
     } @ inputs:
     let
-      overlay = import ./pkgs/overlay.nix { inherit inputs; };
+      overlay = import ./pkgs/overlay.nix {
+        inherit inputs;
+        emacsPackagesForSystems = inputs.emacs-ci.packages;
+      };
 
       inherit (flake-utils.lib) mkApp;
     in

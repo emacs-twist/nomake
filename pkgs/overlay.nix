@@ -1,21 +1,11 @@
-{ inputs }:
+{ inputs, emacsPackagesForSystems }:
 final: prev:
 let
   inherit (prev) lib;
   inherit (inputs.gitignore.lib) gitignoreSource;
 
-  # HACK: Access niv sources of nix-emacs-ci
-  pinnedNixpkgs = (import (inputs.emacs-ci + "/nix/sources.nix") {
-    inherit (prev) system;
-  }).nixpkgs;
-
   # Use the same version of nixpkgs as nix-emacs-ci to utilize binary cache on CI
-  emacsPackages = import pinnedNixpkgs {
-    inherit (prev) system;
-    overlays = [
-      (import (inputs.emacs-ci + "/overlay.nix"))
-    ];
-  };
+  emacsPackages = emacsPackagesForSystems.${prev.system};
 
   pkgs = lib.composeManyExtensions [
     inputs.twist.overlays.default
