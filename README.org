@@ -2,6 +2,10 @@
 :PROPERTIES:
 :TOC:      :include descendants :depth 2
 :END:
+*This project is deprecated.*​
+See [[https://github.com/emacs-twist/rice-config][Rice]] instead, which has simplified code and provides a modular API thanks to [[https://flake.parts/][flake-parts]].
+After migrating all existing projects to it, this repository will be archived.
+
 # Add CI badges here
 #+BEGIN_HTML
 #+END_HTML
